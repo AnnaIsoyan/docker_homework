@@ -1,0 +1,28 @@
+version: '3.3'
+
+services:
+  nginx:
+    image: my_nginx:latest #build from Dockerfile
+    container_name: nginx_container
+    ports:
+      - "80:80"
+    volumes:
+      - nginx_data:/usr/share/nginx/html
+    networks:
+      - my_custom_bridge
+
+volumes:
+  nginx_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: ./data
+
+networks:
+  my_custom_bridge:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 172.19.0.0/16
